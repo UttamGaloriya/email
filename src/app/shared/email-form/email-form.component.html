@@ -1,0 +1,32 @@
+<div class="form-container">
+    <form class="form">
+        <mat-form-field class="example-chip-list" appearance="outline">
+            <mat-label>New Email...</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                <mat-chip-row *ngFor="let fruit of email" (removed)="remove(fruit)">
+                    {{fruit}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <input type="email" placeholder="New Email..." #emailInput [formControl]="emailCtrl" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let email of filteredEmail | async" [value]="email">
+                    {{email}}
+                </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)">
+                <div *ngIf="emailCtrl.errors?.['required']">Email is required.</div>
+                <div *ngIf="emailCtrl.errors?.['email']">Invalid email format.</div>
+            </mat-error>
+
+        </mat-form-field>
+    </form>
+    <button mat-mini-fab color="primary" color="primary" (click)="closeEmailForm()">
+        <mat-icon>close</mat-icon>
+    </button>
+    <button mat-mini-fab color="primary" color="primary" (click)="submitForm()">
+        <mat-icon>check</mat-icon>
+    </button>
+</div>

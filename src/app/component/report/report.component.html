@@ -1,0 +1,30 @@
+<div class="contaniner">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Emailed Reports</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+            <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let report of reportName,let i=index">
+                    <div class="list-title">
+                        <h4>{{report.name |titlecase}}</h4>
+                        <span>
+                            <button mat-button *ngIf="i==showSubListCondtion" (click)="emailFormShow()">Add Email</button>
+                            <mat-slide-toggle (toggleChange)="showSubList(i)" [checked]="i==showSubListCondtion"></mat-slide-toggle>
+                        </span>
+                    </div>
+                    <div *ngIf="i==showSubListCondtion">
+                        <app-email-form *ngIf="reportsEmailList(report.name)==null||emailShow" (close)="emailFormClose()" (submit)="emailSubmit($event,report.name)"></app-email-form>
+                        <mat-list-item role="listitem" *ngFor="let list of reportsEmailList(report.name)" class="sub-list">
+                            <span matListItemIcon class="span-icon">{{list.email | slice:0:1 | uppercase}}</span>
+                            <div matListItemTitle>{{list.email}}</div>
+                            <div matListItemLine>{{list.username}}</div>
+                            <app-menu class="menu-icon" (edit)="subListReportEdit()" (delete)="subListReportDelete()"></app-menu>
+                        </mat-list-item>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>
