@@ -13,7 +13,7 @@ export class ReportComponent {
   emailEditIndex: number = -1
   reportName = reportName;
   showSubListCondtion: number = -1
-  reportsData!: EmailReports;
+
   data: EmailReports = {
     daily: [
       {
@@ -31,11 +31,6 @@ export class ReportComponent {
       email: "uttamgaloriya@gmail.com",
       username: 'uttam'
     }]
-  }
-  constructor() { }
-  ngOnInit(): void {
-    this.reportsData = this.data
-    console.log(Object.keys(this.data))
   }
 
   reportsName() {
@@ -61,30 +56,25 @@ export class ReportComponent {
     this.emailShow = false
   }
 
-
   emailFormShow() {
     this.emailShow = true
   }
+
   emailFormClose(event: any) {
     if (event) {
       this.emailShow = false
     }
   }
+
   emailSubmit(event: any, reportName: 'daily' | 'weekly' | 'other') {
-    const currentData = event.map((res: any) => {
-      return {
-        id: 0,
-        email: res
-      }
-    });
 
     if (this.data[reportName] === undefined) {
-      this.data[reportName] = currentData;
+      this.data[reportName] = event;
     } else {
       let perviousData = this.data[reportName];
       if (perviousData !== undefined) {
-        console.log(perviousData, currentData)
-        const mergedArray = [...perviousData, ...currentData].reduce((acc, obj) => {
+        console.log(perviousData, event)
+        const mergedArray = [...perviousData, ...event].reduce((acc, obj) => {
           const existingObj = acc.find((item: any) => item.email === obj.email);
           if (!existingObj) {
             acc.push(obj);
@@ -99,7 +89,7 @@ export class ReportComponent {
 
     this.emailShow = false
   }
-  //email Edit
+
   emailEditClose(event: any) {
     if (event) {
       this.emailEditIndex = -1
@@ -109,10 +99,7 @@ export class ReportComponent {
   emailEditSubmit(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
     let perviousData = this.data[reportName];
     if (perviousData !== undefined) {
-      perviousData[index] = {
-        id: 0,
-        email: event
-      }
+      perviousData[index] = event
     }
     this.emailEditIndex = -1
   }

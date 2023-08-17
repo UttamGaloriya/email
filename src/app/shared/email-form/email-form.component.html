@@ -3,8 +3,9 @@
         <mat-form-field appearance="outline" class="example-chip-list">
             <!-- mat chip  -->
             <mat-chip-grid #chipGrid aria-label="Fruit selection">
-                <mat-chip-row *ngFor="let email of email" (removed)="remove(email)">
-                    {{email}}
+                <mat-chip-row *ngFor="let userProfile of email" (removed)="remove(userProfile)">
+                    <div>{{userProfile.email}}</div>
+                    <div>{{userProfile?.username}}</div>
                     <button matChipRemove [attr.aria-label]="'remove ' + email">
                         <mat-icon>cancel</mat-icon>
                     </button>
@@ -14,8 +15,8 @@
             <input type="email" matInput [formControl]="emailCtrl" matInput placeholder="New Email..." #emailInput [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
             <!-- auto complete  -->
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let email of filteredEmail | async" [value]="email">
-                    {{email}}
+                <mat-option *ngFor="let useProfile of filteredEmail | async" [value]="useProfile">
+                    {{useProfile.email}}
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>

@@ -19,24 +19,19 @@ export class EmailFormComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   emailCtrl = new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]);
   filteredEmail: Observable<any[]>;
-  email: string[] = [];
+  email: any[] = [];
+  // allEmail: string[] = emailList
   allEmail: any[] = emailList
   @ViewChild('emailInput') emailInput!: ElementRef<HTMLInputElement>;
 
   constructor(public dialog: MatDialog) {
     this.filteredEmail = this.emailCtrl.valueChanges.pipe(
       startWith(null),
-      map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allEmail.slice())),
+      map((email: string | null) => (email ? this._filter(email) : this.allEmail.slice())),
     );
   }
 
-
-  ngOnInit() {
-
-  }
-
   add(event: MatChipInputEvent): void {
-    console.log(this.emailCtrl)
     const value = (event.value || '').trim();
     const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
     let dataPush = false
@@ -49,13 +44,15 @@ export class EmailFormComponent {
         dataPush = false
       }
     }
-    // Add our email
     if (dataPush) {
-      this.email.push(value);
+      let inputProfile = {
+        id: 0,
+        email: value,
+      }
+      this.email.push(inputProfile);
       event.chipInput!.clear();
       this.emailCtrl.setValue('x@gmail.com');
     }
-
   }
 
   remove(email: string): void {
@@ -66,17 +63,23 @@ export class EmailFormComponent {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    let index = this.email.findIndex((res: any) => res == event.option.value.email)
+    let index = this.email.findIndex((res: any) => res.email == event.option.value.email)
     if (index < 0) {
-      this.email.push(event.option.viewValue);
-      this.emailCtrl.setValue('x@gmail.com');
+      this.email.push(event.option.value);
     }
     this.emailInput.nativeElement.value = '';
+    this.emailCtrl.setValue('x@gmail.com');
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.allEmail.filter(email => email.toLowerCase().includes(filterValue))
+  private _filter(value: any) {
+    if (typeof (value) == 'string') {
+      const filterValue = value.toLowerCase();
+      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue))
+    } else {
+      const filterValue = value.email.toLowerCase();
+      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue))
+    }
+
   }
 
   list() {
