@@ -8,6 +8,7 @@ import { map, startWith } from 'rxjs/operators';
 import { emailList } from '../emailList';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { userProfile } from '../interface/email-reports';
 @Component({
   selector: 'app-email-form',
   templateUrl: './email-form.component.html',
@@ -19,7 +20,7 @@ export class EmailFormComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   emailCtrl = new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]);
   filteredEmail: Observable<any[]>;
-  email: any[] = [];
+  email: userProfile[] = [];
   // allEmail: string[] = emailList
   allEmail: any[] = emailList
   @ViewChild('emailInput') emailInput!: ElementRef<HTMLInputElement>;
@@ -39,7 +40,7 @@ export class EmailFormComponent {
       dataPush = true
     }
     if (dataPush) {
-      let data = this.email.filter(res => res == value)
+      let data = this.email.filter((res: userProfile) => res.email == value)
       if (data.length > 0) {
         dataPush = false
       }
@@ -50,12 +51,12 @@ export class EmailFormComponent {
         email: value,
       }
       this.email.push(inputProfile);
-      event.chipInput!.clear();
-      this.emailCtrl.setValue('x@gmail.com');
     }
+    event.chipInput!.clear();
+    this.emailCtrl.setValue('x@gmail.com');
   }
 
-  remove(email: string): void {
+  remove(email: userProfile): void {
     const index = this.email.indexOf(email);
     if (index >= 0) {
       this.email.splice(index, 1);
