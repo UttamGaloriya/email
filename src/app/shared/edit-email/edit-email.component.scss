@@ -1,0 +1,22 @@
+.edit-container{
+    padding: 5px 10px;
+    display: flex;
+    width: 90%;
+    gap: 10px;
+    justify-content: space-between;
+    background: #3756c729;
+    margin: 5px auto;
+  }
+  .form{
+    width: 100%;
+
+  }
+  .example-full-width{width: 80%;}
+  button{
+    margin-left: 10px;
+  }
+  .mat-mdc-form-field-error {
+    display: block;
+    margin-top: -18px;
+}
+.mat-mdc-mini-fab{border-radius:0 !important;}

@@ -4,6 +4,7 @@ export interface EmailReports {
     other?: Array<userProfile>
 }
 export interface userProfile {
+    id?: number
     email: string,
     username?: string
 }

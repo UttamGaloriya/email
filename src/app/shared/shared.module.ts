@@ -4,11 +4,18 @@ import { EmailFormComponent } from './email-form/email-form.component';
 import { MenuComponent } from './menu/menu.component';
 import { MaterialModule } from '../material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EditEmailComponent } from './edit-email/edit-email.component';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+
+
 
 @NgModule({
   declarations: [
     EmailFormComponent,
-    MenuComponent
+    MenuComponent,
+    EditEmailComponent,
+    DialogBoxComponent,
+
   ],
   imports: [
     CommonModule,
@@ -16,6 +23,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
 
   ],
-  exports: [MenuComponent, EmailFormComponent]
+  exports: [MenuComponent, EmailFormComponent, EditEmailComponent]
 })
 export class SharedModule { }

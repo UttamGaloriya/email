@@ -1,32 +1,35 @@
 <div class="form-container">
     <form class="form">
-        <mat-form-field class="example-chip-list" appearance="outline">
-            <mat-label>New Email...</mat-label>
+        <mat-form-field appearance="outline" class="example-chip-list">
+            <!-- mat chip  -->
             <mat-chip-grid #chipGrid aria-label="Fruit selection">
-                <mat-chip-row *ngFor="let fruit of email" (removed)="remove(fruit)">
-                    {{fruit}}
-                    <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                <mat-chip-row *ngFor="let email of email" (removed)="remove(email)">
+                    {{email}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + email">
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </mat-chip-row>
             </mat-chip-grid>
-            <input type="email" placeholder="New Email..." #emailInput [formControl]="emailCtrl" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+            <!-- email  -->
+            <input type="email" matInput [formControl]="emailCtrl" matInput placeholder="New Email..." #emailInput [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
+            <!-- auto complete  -->
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-option *ngFor="let email of filteredEmail | async" [value]="email">
                     {{email}}
                 </mat-option>
             </mat-autocomplete>
-            <mat-error *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)">
-                <div *ngIf="emailCtrl.errors?.['required']">Email is required.</div>
-                <div *ngIf="emailCtrl.errors?.['email']">Invalid email format.</div>
-            </mat-error>
-
         </mat-form-field>
+        <!-- mat error  -->
+        <mat-error *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)">
+            <span *ngIf="emailCtrl.errors?.['required']">Email is required.</span>
+            <span *ngIf="emailCtrl.errors?.['pattern']">Invalid email format.</span>
+        </mat-error>
     </form>
+
+    <button mat-mini-fab color="primary" color="primary" (click)="submitForm()" [disabled]="email.length==0">
+        <mat-icon>check</mat-icon>
+    </button>
     <button mat-mini-fab color="primary" color="primary" (click)="closeEmailForm()">
         <mat-icon>close</mat-icon>
-    </button>
-    <button mat-mini-fab color="primary" color="primary" (click)="submitForm()">
-        <mat-icon>check</mat-icon>
     </button>
 </div>

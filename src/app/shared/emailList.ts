@@ -1,10 +1,4 @@
-export const emailList = [
-    'uttam@gmail.com'
-    , 'raj@gmail.com',
-    'user1@gmail.com',
-    'nothingmail.com',
-    'meet@gmail.com'
-]
+export const emailList = ['uttam@gmail.com', 'raj@gmail.com', 'user1@gmail.com', 'meet@gmail.com']
 export const reportName: reportName[] = [
     {
         id: 1,

@@ -10,6 +10,7 @@ import { EmailReports } from 'src/app/shared/interface/email-reports';
 export class ReportComponent {
   panelOpenState = false;
   emailShow = false
+  emailEditIndex: number = -1
   reportName = reportName;
   showSubListCondtion: number = -1
   reportsData!: EmailReports;
@@ -45,7 +46,8 @@ export class ReportComponent {
     return this.data[reportName] || null
   }
 
-  subListReportEdit() {
+  subListReportEdit(index: number) {
+    this.emailEditIndex = index
   }
   subListReportDelete() {
   }
@@ -63,10 +65,55 @@ export class ReportComponent {
   emailFormShow() {
     this.emailShow = true
   }
-  emailFormClose() {
-
+  emailFormClose(event: any) {
+    if (event) {
+      this.emailShow = false
+    }
   }
   emailSubmit(event: any, reportName: 'daily' | 'weekly' | 'other') {
-    console.log(event)
+    const currentData = event.map((res: any) => {
+      return {
+        id: 0,
+        email: res
+      }
+    });
+
+    if (this.data[reportName] === undefined) {
+      this.data[reportName] = currentData;
+    } else {
+      let perviousData = this.data[reportName];
+      if (perviousData !== undefined) {
+        console.log(perviousData, currentData)
+        const mergedArray = [...perviousData, ...currentData].reduce((acc, obj) => {
+          const existingObj = acc.find((item: any) => item.email === obj.email);
+          if (!existingObj) {
+            acc.push(obj);
+          }
+          return acc;
+        }, []);
+        this.data[reportName] = mergedArray;
+      } else {
+        console.log("perviousData is undefined");
+      }
+    }
+
+    this.emailShow = false
+  }
+  //email Edit
+  emailEditClose(event: any) {
+    if (event) {
+      this.emailEditIndex = -1
+    }
+  };
+
+  emailEditSubmit(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
+    let perviousData = this.data[reportName];
+    if (perviousData !== undefined) {
+      perviousData[index] = {
+        id: 0,
+        email: event
+      }
+    }
+    this.emailEditIndex = -1
   }
 }

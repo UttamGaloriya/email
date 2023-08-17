@@ -10,6 +10,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 10px 0px;
+
 }
 .mat-mdc-list-base {
     --mdc-list-list-item-one-line-container-height: 100%;
@@ -19,6 +21,7 @@
 h4{
     font-size: 24px;
     font-weight: 500;
+    margin: 0px;
 }
 .span-icon{
     background: #559efd;
@@ -36,4 +39,27 @@ h4{
     position: absolute;
     top: 0px;
     right: 0px;
+}
+.mat-mdc-list-item{
+padding: 10px 5px;
+margin-bottom: 10px;
+}
+
+//header
+.mat-mdc-card-header {
+    display: flex;
+    padding: 16px 16px 0;
+    align-items: center;
+    justify-content: space-around;
+}
+.mat-mdc-card-title, .mat-mdc-card-subtitle {
+    font-size: 28px;
+    color: #00289b;
+}
+.sub-list-heading{
+    color: #6c6565;
+}
+.sub-list-subHeading{
+    font-size: 0.9rem;
+    color: #6c6565;
 }
