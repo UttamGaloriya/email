@@ -5,6 +5,8 @@ export interface EmailReports {
 }
 export interface userProfile {
     id?: number
+    validStatus?: string
+    emailDuplicate?: Boolean
     email: string,
     username?: string
 }

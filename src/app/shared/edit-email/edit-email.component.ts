@@ -36,6 +36,7 @@ export class EditEmailComponent {
       width: '500px'
     }).afterClosed().subscribe((res) => { this.close.emit(res) })
   }
+
   get emailChange() {
     if (!this.emailFormControl.valid) {
       return true

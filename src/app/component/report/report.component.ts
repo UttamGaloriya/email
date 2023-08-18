@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { reportName } from 'src/app/shared/emailList';
-import { EmailReports } from 'src/app/shared/interface/email-reports';
+import { EmailReports, userProfile } from 'src/app/shared/interface/email-reports';
 
 @Component({
   selector: 'app-report',
@@ -12,7 +12,7 @@ export class ReportComponent {
   emailShow = false
   emailEditIndex: number = -1
   reportName = reportName;
-  showSubListCondtion: number = -1
+  showSubListCondition: number = -1
 
   data: EmailReports = {
     daily: [
@@ -32,7 +32,9 @@ export class ReportComponent {
       username: 'uttam'
     }]
   }
-
+  ngOnInit() {
+    this.reportName.map(res => res.toggle = false)
+  }
   reportsName() {
     return Object.keys(this.data)
   }
@@ -48,12 +50,7 @@ export class ReportComponent {
   }
 
   showSubList(index: number) {
-    if (this.showSubListCondtion === index) {
-      this.showSubListCondtion = -1
-    } else {
-      this.showSubListCondtion = index
-    }
-    this.emailShow = false
+    this.reportName[index].toggle = !this.reportName[index].toggle
   }
 
   emailFormShow() {

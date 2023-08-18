@@ -21,9 +21,16 @@ export class EmailFormComponent {
   emailCtrl = new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]);
   filteredEmail: Observable<any[]>;
   email: userProfile[] = [];
-  // allEmail: string[] = emailList
   allEmail: any[] = emailList
   @ViewChild('emailInput') emailInput!: ElementRef<HTMLInputElement>;
+
+  ngDoCheck() {
+    this.filteredEmail = this.emailCtrl.valueChanges.pipe(
+      startWith(null),
+      map((email: string | null) => (email ? this._filter(email) : this.allEmail.slice())),
+      map((filteredEmails) => this.filterOutExistingEmails(filteredEmails))
+    );
+  }
 
   constructor(public dialog: MatDialog) {
     this.filteredEmail = this.emailCtrl.valueChanges.pipe(
@@ -36,14 +43,8 @@ export class EmailFormComponent {
     const value = (event.value || '').trim();
     const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
     let dataPush = false
-    if (emailPattern.test(value)) {
+    if (value != '') {
       dataPush = true
-    }
-    if (dataPush) {
-      let data = this.email.filter((res: userProfile) => res.email == value)
-      if (data.length > 0) {
-        dataPush = false
-      }
     }
     if (dataPush) {
       let inputProfile = {
@@ -52,53 +53,109 @@ export class EmailFormComponent {
       }
       this.email.push(inputProfile);
     }
+    this.emailCtrl.setValue(null);
+    //validation
+    if (!emailPattern.test(value)) {
+      let i = this.email.length
+      this.email[i - 1].validStatus = 'inValid'
+      this.emailCtrl.setErrors({ pattern: true });
+    } else {
+      this.emailCtrl.setErrors({ required: false });
+    }
+
+    //condition
     event.chipInput!.clear();
-    this.emailCtrl.setValue('x@gmail.com');
+    this.emailDuplicate()
   }
 
-  remove(email: userProfile): void {
-    const index = this.email.indexOf(email);
-    if (index >= 0) {
-      this.email.splice(index, 1);
+  remove(index: number): void {
+    let removeData = this.email[index]
+    let tempEmail = [...this.email]
+    this.email.map((res) => {
+      if (res.email === removeData.email) {
+        res.validStatus = ''
+      }
+    })
+    this.email.splice(index, 1);
+    let validStatus = this.email.filter(res => res.validStatus == 'duplicate')
+    if (validStatus.length == 0) {
+      this.emailCtrl.setErrors({ duplicate: false });
+    } else {
+      this.emailCtrl.setErrors({ duplicate: true });
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    let index = this.email.findIndex((res: any) => res.email == event.option.value.email)
-    if (index < 0) {
-      this.email.push(event.option.value);
-    }
+    this.emailCtrl.setValue(null);
+    this.emailCtrl.setErrors({ required: false });
+    this.email.push(event.option.value);
     this.emailInput.nativeElement.value = '';
-    this.emailCtrl.setValue('x@gmail.com');
+    this.emailDuplicate()
   }
 
+  //filter
+  emailExists(email: string): boolean {
+    return this.email.some((res) => res.email === email);
+  }
+  private filterOutExistingEmails(filteredEmails: any[]): any[] {
+    return filteredEmails.filter((res) => !this.emailExists(res.email));
+  }
   private _filter(value: any) {
     if (typeof (value) == 'string') {
       const filterValue = value.toLowerCase();
-      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue))
+      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue) && !this.emailExists(res.email))
     } else {
       const filterValue = value.email.toLowerCase();
-      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue))
+      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue) && !this.emailExists(res.email))
     }
-
-  }
-
-  list() {
-    console.log(this.emailCtrl.value)
   }
 
   closeEmailForm() {
-    this.dialog.open(DialogBoxComponent, {
-      data: {
-        heading: "Exit add emails ?",
-        description: 'A emails has not been added.Are you sure you want to leave'
-      },
-      width: '500px'
-    }).afterClosed().subscribe((res) => { this.close.emit(res) })
+    if (this.email.length !== 0 || this.emailCtrl.value !== '') {
+      this.dialog.open(DialogBoxComponent, {
+        data: {
+          heading: "Exit add emails ?",
+          description: 'A emails has not been added.Are you sure you want to leave'
+        },
+        width: '500px'
+      }).afterClosed().subscribe((res) => { this.close.emit(res), this.email = [] })
+    } else {
+      this.close.emit(true)
+    }
   }
 
   submitForm() {
     this.submit.emit(this.email)
     this.email = []
+  }
+
+  emailDuplicate() {
+    let emailLength = this.email.length
+    let index = emailLength - 1
+    let lastData = this.email[emailLength - 1]
+    let tempEmail = [...this.email]
+    tempEmail.pop()
+    if (emailLength >= 2 && lastData.validStatus != 'inValid') {
+      let validIndex = tempEmail.findIndex(res => res.email === lastData.email)
+      if (validIndex >= 0) {
+        this.email[index].validStatus = 'duplicate'
+        this.email[validIndex].validStatus = 'duplicate'
+        this.emailCtrl.setErrors({ duplicate: true });
+      }
+    }
+  }
+
+
+
+  get submitDisable() {
+    if (this.email.length == 0) {
+      return true
+    }
+    let tempEmail = [...this.email]
+    let data = tempEmail.filter(res => res.validStatus == 'duplicate' || res.validStatus == 'inValid')
+    if (data.length !== 0) {
+      return true
+    }
+    return false
   }
 }

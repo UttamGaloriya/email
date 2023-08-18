@@ -8,6 +8,8 @@ export const reportName: reportName[] = [
 ]
 
 interface reportName {
+
+    toggle?: boolean;
     id: number,
     name: 'daily' | 'weekly' | 'other'
 }

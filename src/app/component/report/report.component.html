@@ -8,13 +8,13 @@
             <mat-list role="list">
                 <mat-list-item role="listitem" *ngFor="let report of reportName,let i=index" class="mat-elevation-z6">
                     <div class="list-title">
-                        <h4>{{report.name |titlecase}}</h4>
+                        <h4>{{report.name | titlecase}}</h4>
                         <span>
-                            <button mat-button *ngIf="i==showSubListCondtion" (click)="emailFormShow()">Add Email</button>
-                            <mat-slide-toggle color="primary" (toggleChange)="showSubList(i)" [checked]="i==showSubListCondtion"></mat-slide-toggle>
+                            <button mat-button *ngIf="report.toggle" (click)="emailFormShow()">Add Email</button>
+                            <mat-slide-toggle color="primary" (toggleChange)="showSubList(i)" [checked]="report.toggle"></mat-slide-toggle>
                         </span>
                     </div>
-                    <div *ngIf="i==showSubListCondtion">
+                    <div *ngIf="report.toggle">
                         <app-email-form *ngIf="reportsEmailList(report.name)==null||emailShow" (close)="emailFormClose($event)" (submit)="emailSubmit($event,report.name)"></app-email-form>
                         <mat-list-item role="listitem" *ngFor="let list of reportsEmailList(report.name),let j=index" class="sub-list">
                             <span matListItemIcon class="span-icon" *ngIf="j!=emailEditIndex">{{list.email | slice:0:1 | uppercase}}</span>

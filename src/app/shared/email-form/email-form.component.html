@@ -2,21 +2,30 @@
     <form class="form">
         <mat-form-field appearance="outline" class="example-chip-list">
             <!-- mat chip  -->
-            <mat-chip-grid #chipGrid aria-label="Fruit selection">
-                <mat-chip-row *ngFor="let userProfile of email" (removed)="remove(userProfile)">
-                    <div>{{userProfile.email}}</div>
-                    <div>{{userProfile?.username}}</div>
+            <mat-chip-grid #chipGrid aria-label="email selection">
+                <mat-chip-row *ngFor="let userProfile of email ,let index=index" (removed)="remove(index)" class="mat-chip-list" [ngClass]="userProfile?.validStatus">
+                    <mat-list-item>
+                        <span matListItemIcon class="span-icon">{{userProfile.email | slice:0:1}}</span>
+                        <div matListItemTitle>{{userProfile.email}}</div>
+                        <div matListItemLine>{{userProfile?.username}}</div>
+                    </mat-list-item>
                     <button matChipRemove [attr.aria-label]="'remove ' + email">
                         <mat-icon>cancel</mat-icon>
                     </button>
+                    <span [ngClass]="userProfile.validStatus==='inValid'? 'error-chip':'not-error'">Invalid Email</span>
+                    <span [ngClass]="userProfile.validStatus==='duplicate'? 'info-chip':'not-error'">Duplicate Email</span>
                 </mat-chip-row>
             </mat-chip-grid>
             <!-- email  -->
             <input type="email" matInput [formControl]="emailCtrl" matInput placeholder="New Email..." #emailInput [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
             <!-- auto complete  -->
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let useProfile of filteredEmail | async" [value]="useProfile">
-                    {{useProfile.email}}
+                <mat-option *ngFor="let userProfile of filteredEmail | async" [value]="userProfile">
+                    <mat-list-item>
+                        <span matListItemIcon class="span-icon">{{userProfile.email | slice:0:1}}</span>
+                        <div matListItemTitle>{{userProfile.username}}</div>
+                        <div matListItemLine>{{userProfile.email}}</div>
+                    </mat-list-item>
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
@@ -24,10 +33,11 @@
         <mat-error *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)">
             <span *ngIf="emailCtrl.errors?.['required']">Email is required.</span>
             <span *ngIf="emailCtrl.errors?.['pattern']">Invalid email format.</span>
+            <span *ngIf="emailCtrl.errors?.['duplicate']">Duplicate email </span>
         </mat-error>
     </form>
 
-    <button mat-mini-fab color="primary" color="primary" (click)="submitForm()" [disabled]="email.length==0">
+    <button mat-mini-fab color="primary" color="primary" (click)="submitForm()" [disabled]="submitDisable">
         <mat-icon>check</mat-icon>
     </button>
     <button mat-mini-fab color="primary" color="primary" (click)="closeEmailForm()">
