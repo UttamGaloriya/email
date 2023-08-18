@@ -71,12 +71,21 @@ export class EmailFormComponent {
   remove(index: number): void {
     let removeData = this.email[index]
     let tempEmail = [...this.email]
+    let totalRemove = this.email.filter(res => res.email == removeData.email)
+    if (totalRemove.length > 2) {
+      for (let i = 1; i < totalRemove.length; i++) {
+        let deleteIndex = this.email.findIndex(res => res.email == removeData.email)
+        this.email.splice(deleteIndex, 1);
+      }
+    } else {
+      this.email.splice(index, 1);
+    }
     this.email.map((res) => {
       if (res.email === removeData.email) {
         res.validStatus = ''
       }
     })
-    this.email.splice(index, 1);
+    //show error
     let validStatus = this.email.filter(res => res.validStatus == 'duplicate')
     if (validStatus.length == 0) {
       this.emailCtrl.setErrors({ duplicate: false });
@@ -118,7 +127,13 @@ export class EmailFormComponent {
           description: 'A emails has not been added.Are you sure you want to leave'
         },
         width: '500px'
-      }).afterClosed().subscribe((res) => { this.close.emit(res), this.email = [] })
+      }).afterClosed().subscribe((res) => {
+        this.close.emit(res); if (res) {
+          this.email = [], this.emailCtrl.setValue(null),
+            this.emailInput.nativeElement.value = '';
+          this.emailCtrl.setErrors({ require: false })
+        }
+      })
     } else {
       this.close.emit(true)
     }
