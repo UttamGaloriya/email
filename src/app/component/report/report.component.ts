@@ -46,7 +46,10 @@ export class ReportComponent {
   subListReportEdit(index: number) {
     this.emailEditIndex = index
   }
-  subListReportDelete() {
+  subListReportDelete(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
+    if (event) {
+      this.data[reportName]?.splice(index, 1)
+    }
   }
 
   showSubList(index: number) {

@@ -62,7 +62,6 @@ export class EmailFormComponent {
     } else {
       this.emailCtrl.setErrors({ required: false });
     }
-
     //condition
     event.chipInput!.clear();
     this.emailDuplicate()
@@ -124,7 +123,9 @@ export class EmailFormComponent {
       this.dialog.open(DialogBoxComponent, {
         data: {
           heading: "Exit add emails ?",
-          description: 'A emails has not been added.Are you sure you want to leave'
+          description: 'A emails has not been added.Are you sure you want to leave',
+          firstButton: 'STAY',
+          secondButton: 'EXIT'
         },
         width: '500px'
       }).afterClosed().subscribe((res) => {
@@ -159,8 +160,6 @@ export class EmailFormComponent {
       }
     }
   }
-
-
 
   get submitDisable() {
     if (this.email.length == 0) {

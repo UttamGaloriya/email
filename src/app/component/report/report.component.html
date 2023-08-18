@@ -21,7 +21,7 @@
                             <div class="sub-list-heading" *ngIf="j!=emailEditIndex">{{list.email}}</div>
                             <div class="sub-list-subHeading" *ngIf="j!=emailEditIndex">{{list.username}}</div>
                             <app-edit-email (close)="emailEditClose($event)" (submit)="emailEditSubmit($event ,j,report.name)" [emailOBj]="list" *ngIf="j==emailEditIndex"></app-edit-email>
-                            <app-menu *ngIf="j!=emailEditIndex" class="menu-icon" (edit)="subListReportEdit(j)" (delete)="subListReportDelete()"></app-menu>
+                            <app-menu *ngIf="j!=emailEditIndex" class="menu-icon" (edit)="subListReportEdit(j)" (delete)="subListReportDelete($event,j,report.name)"></app-menu>
                         </mat-list-item>
                     </div>
                 </mat-list-item>

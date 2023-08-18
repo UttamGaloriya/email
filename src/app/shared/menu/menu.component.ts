@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 
 @Component({
   selector: 'app-menu',
@@ -9,12 +11,19 @@ export class MenuComponent {
 
   @Output() edit = new EventEmitter<unknown>();
   @Output() delete = new EventEmitter<unknown>();
-
-
+  constructor(public dialog: MatDialog) { }
   editButton() {
     this.edit.emit()
   }
   deleteButton() {
-    this.delete.emit()
+    this.dialog.open(DialogBoxComponent, {
+      data: {
+        heading: "Delete Email",
+        description: 'Are you sure Delete Email ?',
+        firstButton: 'NO',
+        secondButton: 'Delete'
+      },
+      width: '300px'
+    }).afterClosed().subscribe((res) => { this.delete.emit(res) })
   }
 }

@@ -31,7 +31,9 @@ export class EditEmailComponent {
     this.dialog.open(DialogBoxComponent, {
       data: {
         heading: "Exit Edit emails ?",
-        description: 'A emails has not been Edit.Are you sure you want to leave ?'
+        description: 'A emails has not been Edit.Are you sure you want to leave ?',
+        firstButton: 'STAY',
+        secondButton: 'EXIT'
       },
       width: '500px'
     }).afterClosed().subscribe((res) => { this.close.emit(res) })
