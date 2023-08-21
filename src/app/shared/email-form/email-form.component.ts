@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -20,17 +20,13 @@ export class EmailFormComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   emailCtrl = new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]);
   filteredEmail!: Observable<any[]>;
+  filteredEmails: userProfile[] = emailList
   email: userProfile[] = [];
   allEmail: any[] = emailList
   @ViewChild('emailInput') emailInput!: ElementRef<HTMLInputElement>;
 
   constructor(public dialog: MatDialog) {
-    this.filteredEmail = this.emailCtrl.valueChanges.pipe(
-      startWith(null),
-      map((email: string | null) => (email ? this._filter(email) : this.allEmail.slice())),
-    );
   }
-
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value !== '') {
@@ -65,6 +61,7 @@ export class EmailFormComponent {
     //condition
     this.emailDuplicate()
     event.chipInput!.clear();
+    this.filteredEmails = this.findNewEmails();
   }
 
   remove(index: number): void {
@@ -91,6 +88,7 @@ export class EmailFormComponent {
     } else {
       this.emailCtrl.setErrors({ duplicate: true });
     }
+    this.filteredEmails = this.findNewEmails();
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -99,19 +97,27 @@ export class EmailFormComponent {
     this.email.push(event.option.value);
     this.emailInput.nativeElement.value = '';
     this.emailDuplicate()
+    this.filteredEmails = this.findNewEmails();
   }
 
   //filter
   emailExists(email: string): boolean {
     return this.email.some((res) => res.email === email);
   }
-  private _filter(value: any) {
+  findNewEmails() {
+    const allEmailsSet = new Set(this.email.map(emailObj => emailObj.email));
+    const newEmails = this.allEmail.filter(emailObj => !allEmailsSet.has(emailObj.email));
+    return newEmails;
+  }
+
+  filter(value: any) {
+    const newEmails = this.findNewEmails();
     if (typeof (value) == 'string') {
       const filterValue = value.toLowerCase();
-      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue) && !this.emailExists(res.email))
+      this.filteredEmails = newEmails.filter((res) => res.email.toLowerCase().includes(filterValue) && !this.emailExists(res.email))
     } else {
       const filterValue = value.email.toLowerCase();
-      return this.allEmail.filter((res) => res.email.toLowerCase().includes(filterValue) && !this.emailExists(res.email))
+      this.filteredEmails = newEmails.filter((res) => res.email.toLowerCase().includes(filterValue) && !this.emailExists(res.email))
     }
   }
 
@@ -170,6 +176,5 @@ export class EmailFormComponent {
     return false
   }
 
-  //function
 
 }

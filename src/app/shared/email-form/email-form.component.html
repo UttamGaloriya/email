@@ -17,10 +17,10 @@
                 </mat-chip-row>
             </mat-chip-grid>
             <!-- email  -->
-            <input type="email" matInput [formControl]="emailCtrl" matInput placeholder="New Email..." #emailInput [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
+            <input type="email" matInput [formControl]="emailCtrl" matInput placeholder="New Email..." #emailInput [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" (input)="filter(emailCtrl.value);">
             <!-- auto complete  -->
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let userProfile of filteredEmail | async" [value]="userProfile">
+                <mat-option *ngFor="let userProfile of filteredEmails" [value]="userProfile">
                     <mat-list-item>
                         <span matListItemIcon class="span-icon">{{userProfile.email | slice:0:1}}</span>
                         <div matListItemTitle>{{userProfile.username}}</div>

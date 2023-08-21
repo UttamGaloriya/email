@@ -6,7 +6,7 @@ export interface EmailReports {
 export interface userProfile {
     id?: number
     validStatus?: string,
-    currentAdd?: boolean
+    currentAdd?: boolean,
     email: string,
     username?: string
 }
