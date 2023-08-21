@@ -16,7 +16,7 @@
                     </div>
                     <div *ngIf="report.toggle">
                         <app-email-form *ngIf="reportsEmailList(report.name)==null||emailShow" (close)="emailFormClose($event)" (submit)="emailSubmit($event,report.name)"></app-email-form>
-                        <mat-list-item role="listitem" *ngFor="let list of reportsEmailList(report.name),let j=index" class="sub-list">
+                        <mat-list-item role="listitem" *ngFor="let list of reportsEmailList(report.name),let j=index" class="sub-list" [ngClass]="list.currentAdd ?'current-add':''">
                             <span matListItemIcon class="span-icon" *ngIf="j!=emailEditIndex">{{list.email | slice:0:1 | uppercase}}</span>
                             <div class="sub-list-heading" *ngIf="j!=emailEditIndex">{{list.email}}</div>
                             <div class="sub-list-subHeading" *ngIf="j!=emailEditIndex">{{list.username}}</div>

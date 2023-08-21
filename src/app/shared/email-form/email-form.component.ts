@@ -169,4 +169,7 @@ export class EmailFormComponent {
     }
     return false
   }
+
+  //function
+
 }

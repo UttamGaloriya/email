@@ -67,13 +67,16 @@ export class ReportComponent {
   }
 
   emailSubmit(event: any, reportName: 'daily' | 'weekly' | 'other') {
-
+    console.log(event)
+    event.map((res: any) => res.currentAdd = true)
+    console.log(event)
     if (this.data[reportName] === undefined) {
       this.data[reportName] = event;
     } else {
       let perviousData = this.data[reportName];
+      perviousData?.map((res: any) => res.currentAdd = false)
+      // perviousData = perviousData?.map((res:any)=>res.currentAdd=false)
       if (perviousData !== undefined) {
-        console.log(perviousData, event)
         const mergedArray = [...perviousData, ...event].reduce((acc, obj) => {
           const existingObj = acc.find((item: any) => item.email === obj.email);
           if (!existingObj) {
