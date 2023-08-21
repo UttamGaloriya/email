@@ -26,7 +26,7 @@ export class EditEmailComponent {
     this.emailOBj.email = value
     this.emailOBj.edit = false
     this.submit.emit(this.emailOBj)
-    this.snackbar.showNotification('Data add Success fully', 'X', 'success')
+    this.snackbar.showNotification('Data add Successful', 'X', 'success')
   }
 
   closeEmailForm() {
