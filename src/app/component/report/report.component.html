@@ -10,12 +10,12 @@
                     <div class="list-title">
                         <h4>{{report.name | titlecase}}</h4>
                         <span>
-                            <button mat-button *ngIf="report.toggle" (click)="emailFormShow()">Add Email</button>
+                            <button mat-button *ngIf="report.toggle" (click)="emailFormShow(i)">Add Email</button>
                             <mat-slide-toggle color="primary" (toggleChange)="showSubList(i)" [checked]="report.toggle"></mat-slide-toggle>
                         </span>
                     </div>
                     <div *ngIf="report.toggle">
-                        <app-email-form *ngIf="reportsEmailList(report.name)==null||emailShow" (close)="emailFormClose($event)" (submit)="emailSubmit($event,report.name)"></app-email-form>
+                        <app-email-form *ngIf="report.emailForm || noEmailFound(i,report.name)" (close)="emailFormClose($event,i)" (submit)="emailSubmit($event,report.name,i)"></app-email-form>
                         <mat-list-item role="listitem" *ngFor="let list of reportsEmailList(report.name),let j=index" class="sub-list" [ngClass]="list.currentAdd ?'current-add':''">
                             <span matListItemIcon class="span-icon" *ngIf="!list.edit">{{list.email | slice:0:1 | uppercase}}</span>
                             <div class="sub-list-heading" *ngIf="!list.edit">{{list.email}}</div>

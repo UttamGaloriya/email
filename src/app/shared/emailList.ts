@@ -2,13 +2,13 @@ import { userProfile } from "./interface/email-reports"
 
 // export const emailList = ['uttam@gmail.com', 'raj@gmail.com', 'user1@gmail.com', 'meet@gmail.com']
 export const reportName: reportName[] = [
-    { id: 1, name: 'daily' },
-    { id: 2, name: 'weekly' },
-    { id: 3, name: 'other' },
+    { id: 1, name: 'daily', emailForm: false },
+    { id: 2, name: 'weekly', emailForm: false },
+    { id: 3, name: 'other', emailForm: false },
 ]
 
 interface reportName {
-
+    emailForm?: boolean
     toggle?: boolean;
     id: number,
     name: 'daily' | 'weekly' | 'other'
