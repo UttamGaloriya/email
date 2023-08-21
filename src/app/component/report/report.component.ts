@@ -84,7 +84,6 @@ export class ReportComponent {
     } else {
       let perviousData = this.data[reportName];
       perviousData?.map((res: any) => res.currentAdd = false)
-      // perviousData = perviousData?.map((res:any)=>res.currentAdd=false)
       if (perviousData !== undefined) {
         const mergedArray = [...perviousData, ...event].reduce((acc, obj) => {
           const existingObj = acc.find((item: any) => item.email === obj.email);
@@ -99,6 +98,8 @@ export class ReportComponent {
       }
     }
     this.emailShow = false
+    setTimeout(() => { this.data[reportName]?.map(res => res.currentAdd = false) }, 3000)
+
   }
 
   emailEditClose(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
