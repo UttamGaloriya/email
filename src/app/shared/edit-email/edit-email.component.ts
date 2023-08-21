@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { userProfile } from '../interface/email-reports';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
   selector: 'app-edit-email',
@@ -14,8 +15,7 @@ export class EditEmailComponent {
   @Output() close = new EventEmitter<unknown>();
   @Output() submit = new EventEmitter<unknown>();
   @Input() emailOBj!: userProfile;
-  constructor(public dialog: MatDialog) {
-
+  constructor(public dialog: MatDialog, private snackbar: SnackbarService) {
   }
 
   ngOnInit() {
@@ -24,7 +24,9 @@ export class EditEmailComponent {
 
   submitForm(value: string) {
     this.emailOBj.email = value
+    this.emailOBj.edit = false
     this.submit.emit(this.emailOBj)
+    this.snackbar.showNotification('Data add Success fully', 'X', 'success')
   }
 
   closeEmailForm() {

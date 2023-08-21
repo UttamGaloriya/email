@@ -17,11 +17,11 @@
                     <div *ngIf="report.toggle">
                         <app-email-form *ngIf="reportsEmailList(report.name)==null||emailShow" (close)="emailFormClose($event)" (submit)="emailSubmit($event,report.name)"></app-email-form>
                         <mat-list-item role="listitem" *ngFor="let list of reportsEmailList(report.name),let j=index" class="sub-list" [ngClass]="list.currentAdd ?'current-add':''">
-                            <span matListItemIcon class="span-icon" *ngIf="j!=emailEditIndex">{{list.email | slice:0:1 | uppercase}}</span>
-                            <div class="sub-list-heading" *ngIf="j!=emailEditIndex">{{list.email}}</div>
-                            <div class="sub-list-subHeading" *ngIf="j!=emailEditIndex">{{list.username}}</div>
-                            <app-edit-email (close)="emailEditClose($event)" (submit)="emailEditSubmit($event ,j,report.name)" [emailOBj]="list" *ngIf="j==emailEditIndex"></app-edit-email>
-                            <app-menu *ngIf="j!=emailEditIndex" class="menu-icon" (edit)="subListReportEdit(j)" (delete)="subListReportDelete($event,j,report.name)"></app-menu>
+                            <span matListItemIcon class="span-icon" *ngIf="!list.edit">{{list.email | slice:0:1 | uppercase}}</span>
+                            <div class="sub-list-heading" *ngIf="!list.edit">{{list.email}}</div>
+                            <div class="sub-list-subHeading" *ngIf="!list.edit">{{list.username}}</div>
+                            <app-edit-email (close)="emailEditClose($event,j,report.name)" (submit)="emailEditSubmit($event ,j,report.name)" [emailOBj]="list" *ngIf="list.edit"></app-edit-email>
+                            <app-menu *ngIf="!list.edit" class="menu-icon" (edit)="subListReportEdit(j,report.name)" (delete)="subListReportDelete($event,j,report.name)"></app-menu>
                         </mat-list-item>
                     </div>
                 </mat-list-item>

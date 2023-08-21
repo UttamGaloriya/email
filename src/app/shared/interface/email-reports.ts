@@ -9,4 +9,5 @@ export interface userProfile {
     currentAdd?: boolean,
     email: string,
     username?: string
+    edit?: boolean
 }

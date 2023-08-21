@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { reportName } from 'src/app/shared/emailList';
-import { EmailReports, userProfile } from 'src/app/shared/interface/email-reports';
+import { EmailReports } from 'src/app/shared/interface/email-reports';
 
 @Component({
   selector: 'app-report',
@@ -11,6 +11,7 @@ export class ReportComponent {
   panelOpenState = false;
   emailShow = false
   emailEditIndex: number = -1
+
   reportName = reportName;
   showSubListCondition: number = -1
 
@@ -18,22 +19,27 @@ export class ReportComponent {
     daily: [
       {
         email: "uttamgaloriya@gmail.com",
-        username: 'uttam'
+        username: 'uttam',
+        edit: false
       }, {
         email: "gttamgaloriya@gmail.com",
-        username: 'uttam'
+        username: 'uttam',
+        edit: false
       }, {
         email: "xttamgaloriya@gmail.com",
-        username: 'uttam'
+        username: 'uttam',
+        edit: false
       },
     ],
     weekly: [{
       email: "uttamgaloriya@gmail.com",
-      username: 'uttam'
+      username: 'uttam',
+      edit: false
     }]
   }
   ngOnInit() {
     this.reportName.map(res => res.toggle = false)
+
   }
   reportsName() {
     return Object.keys(this.data)
@@ -43,8 +49,11 @@ export class ReportComponent {
     return this.data[reportName] || null
   }
 
-  subListReportEdit(index: number) {
-    this.emailEditIndex = index
+  subListReportEdit(index: number, reportName: 'daily' | 'weekly' | 'other') {
+    let perviousData = this.data[reportName];
+    if (perviousData !== undefined) {
+      perviousData[index].edit = !perviousData[index].edit
+    }
   }
   subListReportDelete(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
     if (event) {
@@ -89,13 +98,15 @@ export class ReportComponent {
         console.log("perviousData is undefined");
       }
     }
-
     this.emailShow = false
   }
 
-  emailEditClose(event: any) {
+  emailEditClose(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
     if (event) {
-      this.emailEditIndex = -1
+      let perviousData = this.data[reportName];
+      if (perviousData !== undefined) {
+        perviousData[index].edit = !perviousData[index].edit
+      }
     }
   };
 

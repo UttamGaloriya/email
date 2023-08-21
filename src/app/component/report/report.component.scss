@@ -64,6 +64,17 @@ margin-bottom: 10px;
     color: #6c6565;
 }
 .current-add{
-    border: 1px solid #84c562;
-    background: #8de5a873
+animation-name: showAddEmail;
+border: 1px solid transparent;
+  animation-duration: 3s;
+}
+@keyframes showAddEmail {
+    0%{
+        border: 1px solid #84c562;
+        background: #8de5a873;
+    }
+    50%{
+        border: 1px solid #85c5628e;
+        background: #8de5a721;
+    }
 }

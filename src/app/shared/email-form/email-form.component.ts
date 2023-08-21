@@ -4,11 +4,11 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { emailList } from '../emailList';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { userProfile } from '../interface/email-reports';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 @Component({
   selector: 'app-email-form',
   templateUrl: './email-form.component.html',
@@ -25,7 +25,7 @@ export class EmailFormComponent {
   allEmail: any[] = emailList
   @ViewChild('emailInput') emailInput!: ElementRef<HTMLInputElement>;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private snackbar: SnackbarService) {
   }
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -40,6 +40,7 @@ export class EmailFormComponent {
         let inputProfile = {
           id: 0,
           email: value,
+          edit: false,
         }
         this.email.push(inputProfile);
       }
@@ -146,6 +147,7 @@ export class EmailFormComponent {
   submitForm() {
     this.submit.emit(this.email)
     this.email = []
+    this.snackbar.showNotification('Data add Success fully', 'X', 'success')
   }
 
   emailDuplicate() {
