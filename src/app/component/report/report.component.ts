@@ -65,17 +65,17 @@ export class ReportComponent {
     this.reportName[index].toggle = !this.reportName[index].toggle
   }
 
-  emailFormShow() {
-    this.emailShow = true
+  emailFormShow(index: number) {
+    this.reportName[index].emailForm = true
   }
 
-  emailFormClose(event: any) {
+  emailFormClose(event: any, index: number) {
     if (event) {
-      this.emailShow = false
+      this.reportName[index].emailForm = false
     }
   }
 
-  emailSubmit(event: any, reportName: 'daily' | 'weekly' | 'other') {
+  emailSubmit(event: any, reportName: 'daily' | 'weekly' | 'other', index: number) {
     console.log(event)
     event.map((res: any) => res.currentAdd = true)
     console.log(event)
@@ -99,7 +99,7 @@ export class ReportComponent {
     }
     this.emailShow = false
     setTimeout(() => { this.data[reportName]?.map(res => res.currentAdd = false) }, 3000)
-
+    this.reportName[index].emailForm = false
   }
 
   emailEditClose(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
@@ -117,5 +117,13 @@ export class ReportComponent {
       perviousData[index] = event
     }
     this.emailEditIndex = -1
+  }
+  noEmailFound(index: number, reportName: 'daily' | 'weekly' | 'other') {
+    let perviousData = this.data[reportName]
+    if (perviousData === undefined || perviousData === null) {
+      return true
+    }
+    return false
+
   }
 }
