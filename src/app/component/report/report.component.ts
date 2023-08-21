@@ -11,7 +11,6 @@ export class ReportComponent {
   panelOpenState = false;
   emailShow = false
   emailEditIndex: number = -1
-
   reportName = reportName;
   showSubListCondition: number = -1
 
@@ -38,7 +37,6 @@ export class ReportComponent {
     }]
   }
   ngOnInit() {
-    this.reportName.map(res => res.toggle = false)
 
   }
   reportsName() {
@@ -76,9 +74,7 @@ export class ReportComponent {
   }
 
   emailSubmit(event: any, reportName: 'daily' | 'weekly' | 'other', index: number) {
-    console.log(event)
     event.map((res: any) => res.currentAdd = true)
-    console.log(event)
     if (this.data[reportName] === undefined) {
       this.data[reportName] = event;
     } else {
@@ -124,6 +120,5 @@ export class ReportComponent {
       return true
     }
     return false
-
   }
 }

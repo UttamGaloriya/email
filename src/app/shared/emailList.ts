@@ -2,9 +2,9 @@ import { userProfile } from "./interface/email-reports"
 
 // export const emailList = ['uttam@gmail.com', 'raj@gmail.com', 'user1@gmail.com', 'meet@gmail.com']
 export const reportName: reportName[] = [
-    { id: 1, name: 'daily', emailForm: false },
-    { id: 2, name: 'weekly', emailForm: false },
-    { id: 3, name: 'other', emailForm: false },
+    { id: 1, name: 'daily', emailForm: false, toggle: false },
+    { id: 2, name: 'weekly', emailForm: false, toggle: false },
+    { id: 3, name: 'other', emailForm: false, toggle: false },
 ]
 
 interface reportName {

@@ -167,16 +167,10 @@ export class EmailFormComponent {
   }
 
   get submitDisable() {
-    if (this.email.length == 0) {
-      return true
-    }
+    if (this.email.length == 0) { return true }
     let tempEmail = [...this.email]
     let data = tempEmail.filter(res => res.validStatus == 'duplicate' || res.validStatus == 'inValid')
-    if (data.length !== 0) {
-      return true
-    }
+    if (data.length !== 0) { return true }
     return false
   }
-
-
 }
