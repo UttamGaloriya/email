@@ -19,18 +19,10 @@ export class EmailFormComponent {
   @Output() submit = new EventEmitter<unknown>();
   separatorKeysCodes: number[] = [ENTER, COMMA];
   emailCtrl = new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]);
-  filteredEmail: Observable<any[]>;
+  filteredEmail!: Observable<any[]>;
   email: userProfile[] = [];
   allEmail: any[] = emailList
   @ViewChild('emailInput') emailInput!: ElementRef<HTMLInputElement>;
-
-  ngDoCheck() {
-    this.filteredEmail = this.emailCtrl.valueChanges.pipe(
-      startWith(null),
-      map((email: string | null) => (email ? this._filter(email) : this.allEmail.slice())),
-      map((filteredEmails) => this.filterOutExistingEmails(filteredEmails))
-    );
-  }
 
   constructor(public dialog: MatDialog) {
     this.filteredEmail = this.emailCtrl.valueChanges.pipe(
@@ -41,30 +33,38 @@ export class EmailFormComponent {
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
-    let dataPush = false
-    if (value != '') {
-      dataPush = true
-    }
-    if (dataPush) {
-      let inputProfile = {
-        id: 0,
-        email: value,
+    if (value !== '') {
+      console.log(value)
+      const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
+      let dataPush = false
+      if (value != '') {
+        dataPush = true
       }
-      this.email.push(inputProfile);
-    }
-    this.emailCtrl.setValue(null);
-    //validation
-    if (!emailPattern.test(value)) {
-      let i = this.email.length
-      this.email[i - 1].validStatus = 'inValid'
-      this.emailCtrl.setErrors({ pattern: true });
+      if (dataPush) {
+        let inputProfile = {
+          id: 0,
+          email: value,
+        }
+        this.email.push(inputProfile);
+      }
+      this.emailCtrl.setValue(null);
+      //validation
+      if (!emailPattern.test(value)) {
+        let i = this.email.length
+        this.email[i - 1].validStatus = 'inValid'
+        this.emailCtrl.setValue(null);
+        this.emailCtrl.setErrors({ pattern: true });
+      } else {
+        this.emailCtrl.setErrors({ required: false });
+      }
     } else {
+      this.emailCtrl.setValue(null);
+      this.emailCtrl.setErrors({ pattern: false });
       this.emailCtrl.setErrors({ required: false });
     }
     //condition
-    event.chipInput!.clear();
     this.emailDuplicate()
+    event.chipInput!.clear();
   }
 
   remove(index: number): void {
@@ -104,9 +104,6 @@ export class EmailFormComponent {
   //filter
   emailExists(email: string): boolean {
     return this.email.some((res) => res.email === email);
-  }
-  private filterOutExistingEmails(filteredEmails: any[]): any[] {
-    return filteredEmails.filter((res) => !this.emailExists(res.email));
   }
   private _filter(value: any) {
     if (typeof (value) == 'string') {
@@ -148,11 +145,11 @@ export class EmailFormComponent {
   emailDuplicate() {
     let emailLength = this.email.length
     let index = emailLength - 1
-    let lastData = this.email[emailLength - 1]
+    let lastData = this.email[index]
     let tempEmail = [...this.email]
     tempEmail.pop()
-    if (emailLength >= 2 && lastData.validStatus != 'inValid') {
-      let validIndex = tempEmail.findIndex(res => res.email === lastData.email)
+    if (emailLength >= 2) {
+      let validIndex = tempEmail.findIndex(res => res.email === lastData.email && lastData.validStatus != 'inValid')
       if (validIndex >= 0) {
         this.email[index].validStatus = 'duplicate'
         this.email[validIndex].validStatus = 'duplicate'
