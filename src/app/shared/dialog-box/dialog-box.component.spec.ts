@@ -15,8 +15,8 @@ describe('DialogBoxComponent', () => {
       declarations: [DialogBoxComponent],
       imports: [ReactiveFormsModule, BrowserAnimationsModule, RouterTestingModule, MaterialModule],
       providers: [
-        { provide: MatDialogRef, useValue: {} }, // Mock MatDialogRef
-        { provide: MAT_DIALOG_DATA, useValue: {} } // Mock MAT_DIALOG_DATA if used
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
       ]
     })
       .compileComponents();
