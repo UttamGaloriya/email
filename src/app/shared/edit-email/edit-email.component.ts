@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { userProfile } from '../interface/email-reports';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-edit-email',
@@ -14,7 +14,10 @@ export class EditEmailComponent {
   emailFormControl!: FormControl
   @Output() close = new EventEmitter<unknown>();
   @Output() submit = new EventEmitter<unknown>();
-  @Input() emailOBj!: userProfile;
+  @Input() emailOBj: userProfile = {
+    id: -1,
+    email: ''
+  };
   constructor(public dialog: MatDialog, private snackbar: SnackbarService) {
   }
 

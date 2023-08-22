@@ -8,7 +8,7 @@ import { emailList } from '../emailList';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { userProfile } from '../interface/email-reports';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from '../../services/snackbar.service';
 @Component({
   selector: 'app-email-form',
   templateUrl: './email-form.component.html',

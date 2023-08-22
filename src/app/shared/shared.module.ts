@@ -23,6 +23,6 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
     ReactiveFormsModule
 
   ],
-  exports: [MenuComponent, EmailFormComponent, EditEmailComponent]
+  exports: [MenuComponent, EmailFormComponent, EditEmailComponent, MaterialModule]
 })
 export class SharedModule { }

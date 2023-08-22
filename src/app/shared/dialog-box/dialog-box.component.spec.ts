@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogBoxComponent } from './dialog-box.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MaterialModule } from '../../material/material.module';
 
 describe('DialogBoxComponent', () => {
   let component: DialogBoxComponent;
@@ -8,9 +12,14 @@ describe('DialogBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DialogBoxComponent ]
+      declarations: [DialogBoxComponent],
+      imports: [ReactiveFormsModule, BrowserAnimationsModule, RouterTestingModule, MaterialModule],
+      providers: [
+        { provide: MatDialogRef, useValue: {} }, // Mock MatDialogRef
+        { provide: MAT_DIALOG_DATA, useValue: {} } // Mock MAT_DIALOG_DATA if used
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DialogBoxComponent);
     component = fixture.componentInstance;
