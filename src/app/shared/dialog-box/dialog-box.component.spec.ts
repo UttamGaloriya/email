@@ -20,7 +20,6 @@ describe('DialogBoxComponent', () => {
       ]
     })
       .compileComponents();
-
     fixture = TestBed.createComponent(DialogBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

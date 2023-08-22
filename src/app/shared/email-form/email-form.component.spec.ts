@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material/material.module';
 import { SnackbarService } from '../../services/snackbar.service';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 
 describe('EmailFormComponent', () => {
@@ -54,5 +55,10 @@ describe('EmailFormComponent', () => {
     }];
     const exitEmail = component.emailExists('uttam@gmail.com')
     expect(exitEmail).toBe(true)
+  }))
+
+  it('email add using form control', (() => {
+
+
   }))
 });

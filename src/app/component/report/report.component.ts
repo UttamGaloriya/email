@@ -53,6 +53,7 @@ export class ReportComponent {
       perviousData[index].edit = !perviousData[index].edit
     }
   }
+
   subListReportDelete(event: any, index: number, reportName: 'daily' | 'weekly' | 'other') {
     if (event) {
       this.data[reportName]?.splice(index, 1)
