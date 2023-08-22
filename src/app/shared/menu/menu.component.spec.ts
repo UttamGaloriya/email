@@ -29,16 +29,16 @@ describe('MenuComponent', () => {
   });
 
   it('edit button', () => {
-    let editButtonSpy = jest.spyOn(component, 'editButton'); // Create a spy on the function
-    component.editButton(); // Call the function
-    expect(editButtonSpy).toHaveBeenCalled(); // Check if the spy was called
+    let editButtonSpy = jest.spyOn(component, 'editButton');
+    component.editButton();
+    expect(editButtonSpy).toHaveBeenCalled();
     editButtonSpy.mockRestore()
   });
 
   it('delete button', () => {
     let deleteButton = jest.spyOn(component, 'deleteButton');
-    component.deleteButton();//call function
-    expect(deleteButton).toHaveBeenCalled();//check if spy is called and restore mock
+    component.deleteButton();
+    expect(deleteButton).toHaveBeenCalled();
     deleteButton.mockRestore()
   })
 
