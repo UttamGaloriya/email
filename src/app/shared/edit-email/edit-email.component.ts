@@ -52,6 +52,7 @@ export class EditEmailComponent {
         return true
       }
       return false
+
     }
   }
 }
